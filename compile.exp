@@ -1,0 +1,22 @@
+set ip 10.10.35.207
+set psw 123
+
+spawn ssh root@$ip "rm -rf /userdata/yx_user/business/log/*;killall -9 userdata/yx_debug_bin/*"
+expect {
+    "yes/no" {send "yes\r";exp_continue;}
+    "password" {send "$psw\r"}
+}
+expect eof #等待删除完所有log并停止monitor,robot
+
+spawn scp out/robot.svc root@$ip:/userdata/yx_debug_bin 
+expect {
+    "yes/no" {send "yes\r";exp_continue;}
+    "password" {send "$psw\r"}    
+}
+expect eof #等待传输完成后赋予权限
+
+spawn ssh root@$ip "chmod 777 userdata/yx_debug_bin/robot.svc"
+expect {
+    "yes/no" {send "yes\r";exp_continue;}
+    "password" {send "$psw\r"}
+}
