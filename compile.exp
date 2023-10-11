@@ -20,3 +20,4 @@ expect {
     "yes/no" {send "yes\r";exp_continue;}
     "password" {send "$psw\r"}
 }
+expect eof
