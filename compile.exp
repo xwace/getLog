@@ -1,5 +1,5 @@
-set ip 10.10.35.207
-set psw 123
+set ip myip
+set psw mypassword
 
 spawn ssh root@$ip "rm -rf /userdata/yx_user/business/log/*;killall -9 userdata/yx_debug_bin/*"
 expect {
