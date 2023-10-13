@@ -1,3 +1,31 @@
+set ip 10.10.35.182
+set psw ****
+set logPath /userdata/yx_user/business
+
+spawn ssh root@$ip "rm -rf /userdata/yx_debug_bin/robot.svc"
+expect {
+    "yes/no" {send "yes\r";exp_continue;}
+    "password" {send "$psw\r"}
+}
+interact
+
+spawn scp out/robot.svc root@$ip:/userdata/yx_debug_bin 
+expect {
+    "yes/no" {send "yes\r";exp_continue;}
+    "password" {send "$psw\r"}
+}
+interact
+
+spawn ssh root@$ip "chmod 777 /userdata/yx_debug_bin/robot.svc;\
+rm -rf $logPath/log/* $logPath/txt/1/* $logPath/txt/2/* $logPath/txt/3/*"
+expect {
+    "yes/no" {send "yes\r";exp_continue;}
+    "password" {send "$psw\r"}
+}
+interact
+
+
+********************************************************************************************
 set ip myip
 set psw mypassword
 
