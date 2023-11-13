@@ -79,7 +79,7 @@ checkDuplicatedFiles(){
     fi
 }
 
-checkDuplicatedFiles(){
+checkDuplicatedFilesBK(){
     dup_files=$(find $ROOT_PWD/src/public $ROOT_PWD/src/normal_operation -regex ".*\.h\|.*\.cpp\|.*\.a" -type f|\
                 awk -F/ 'BEGIN{RS="\n"} {n=$NF} k[n]==1{print p[n]} k[n]{print $0} {p[n]=$0;k[n]++}')
 
