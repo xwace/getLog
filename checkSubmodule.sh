@@ -12,6 +12,7 @@ FULLPATH=$SUBMOD_ROOT_PATH/fullpath.tar.gz
 submodules=($FASTMAP $CLEANAREA $DOCKING $FULLCOVER $GYRO $LIDAR)
 WARNING="Please select the branch and git pull:需更新子模块"
 checkCharging=1
+isDup=0
 
 FIND_FILE="$ROOT_PWD/src/CMakeLists.txt"
 FIND_STR="^\s*set.*normal_operation\/docking\/find_dock"
@@ -61,29 +62,20 @@ pullSubmod() {
     fi
 }
 
-checkDuplicatedFilesBK(){
-    Dup=0
+checkDuplicatedFiles(){
     for file in `ls -R $SUBMOD_ROOT_PATH`
     do  
         if [[ $file == *.cpp ]]||[[ $file == *.h ]]||[[ $file == *.a ]];then 
-
-            replic_files=($(find $ROOT_PWD/src/public $ROOT_PWD/src/normal_operation -name $file))
-
-            if [[ ${#replic_files[*]} -gt 1 ]];then
-                for var in ${replic_files[@]}
-                do
-                    echo -e "\e[31mDuplicated Files: $var 重复\e[0m"
-                    Dup=1
-                done
+            dup_files=($(find $ROOT_PWD/src/public $ROOT_PWD/src/normal_operation -name $file))
+            if [[ ${#dup_files[*]} -gt 1 ]];then
+                echo -e "\e[1;31m重复文件请删除:${dup_files[@]}\e[0m"
+                ((isDup++));
             fi
         fi
     done
 
-    if [[ Dup -eq 1 ]];then
-        read -p "检测到重复文件,是否忽略该重复文件? 继续编译选0,结束选1: " ign
-        if [[ $ign -eq 1 ]];then
-            exit
-        fi
+    if [[ isDup -gt 1 ]];then
+        exit
     fi
 }
 
