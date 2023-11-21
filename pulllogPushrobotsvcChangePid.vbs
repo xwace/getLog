@@ -74,11 +74,35 @@ if fso.folderExists(desktopPath&"\log") then
 end if
 set fso = Nothing
 
-if ws.run("adb shell",,true)>0 then
-	WScript.Echo "Failed to open adb!!!"
-	set ws = Nothing
+'判断adb是否打开:method1
+Dim deviceName,reg,match
+set ret = ws.Exec("adb devices")
+deviceName = ret.stdOut.ReadAll()
+set reg=New RegExp
+reg.pattern="device"
+reg.Global=True
+set match=reg.Execute(deviceName)
+
+if match.count <= 1 then
+    WScript.Echo "Failed to open ADB!!!"
+    set ws = Nothing
+	set ret = Nothing
+	set deviceName = Nothing
+	set reg=Nothing
+	set match=Nothing
 	WScript.Quit
 end if
+set ret = Nothing
+set deviceName = Nothing
+set reg=Nothing
+set match=Nothing
+
+'判断adb是否打开:method2
+'if ws.run("adb shell",,true)>0 then
+	'WScript.Echo "Failed to open adb!!!"
+	'set ws = Nothing
+	'WScript.Quit
+'end if
 
 ws.run "adb shell",1 'ws.run "ssh root@10.10.35.212", 0, True
 wscript.sleep 500
