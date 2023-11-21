@@ -23,16 +23,44 @@ end if
 
 Set ws = CreateObject("WScript.shell")
 
-if ws.run("adb shell",,true)>0 then
-	WScript.Echo "Failed to open adb!!!"
-	set ws = Nothing
+'判断adb是否打开
+Dim deviceName,reg,match
+set ret = ws.Exec("adb devices")
+deviceName = ret.stdOut.ReadAll()
+set reg=New RegExp
+reg.pattern="device"
+reg.Global=True
+set match=reg.Execute(deviceName)
+
+if match.count <= 1 then
+    WScript.Echo "Failed to open ADB!!!"
+    set ws = Nothing
 	set fso = Nothing
 	set Project = Nothing
 	set psw = Nothing
 	set calPath = Nothing
 	set resultPath = Nothing
+	set ret = Nothing
+	set deviceName = Nothing
+	set reg=Nothing
+	set match=Nothing
 	WScript.Quit
 end if
+set ret = Nothing
+set deviceName = Nothing
+set reg=Nothing
+set match=Nothing
+
+'if ws.run("adb shell",,true)>0 then
+	'WScript.Echo "Failed to open adb!!!"
+	'set ws = Nothing
+	'set fso = Nothing
+	'set Project = Nothing
+	'set psw = Nothing
+	'set calPath = Nothing
+	'set resultPath = Nothing
+	'WScript.Quit
+'end if
 
 ws.run "adb shell"
 wscript.sleep 500
