@@ -1,5 +1,5 @@
 sub pullLog()
-	ws.run "cmd /k "&desktopPath
+	ws.run "cmd /k c: && cd "&desktopPath
 	ws.run "adb pull /userdata/yx_user/business/log/" 'cmd /k e: && adb pull /userdata/yx_user/business/log/
 end sub
 
@@ -7,15 +7,20 @@ sub pushsvc()
 	ws.sendkeys("rm -rf /userdata/yx_user/business/log/*")
 	ws.sendkeys("{ENTER}")
 	wscript.sleep 4000
-	ws.sendkeys("chmod 777 /userdata/yx_debug_bin/robot.svc && reboot")
+	ws.sendkeys("mkdir -p /userdata/yx_debug_bin")
+	ws.sendkeys("{ENTER}")
+	wscript.sleep 500
+	ws.sendkeys("chmod 777 /userdata/yx_debug_bin/robot.svc&&ls /userdata/yx_debug_bin/")
 
-	ws.run "cmd /k "&desktopPath
+	ws.run "cmd /k c: && cd "&desktopPath
 	ws.run "adb push robot.svc /userdata/yx_debug_bin/",1
 	wscript.sleep 3000
-	ws.run "taskkill /f /im cmd.exe",1
+	'ws.run "taskkill /f /im cmd.exe",1
 
+	wscript.sleep 500
 	ws.appactivate("adb.exe")
 	ws.sendkeys("{ENTER}")
+	ws.sendkeys("reboot")
 end sub
 
 sub changePid()
@@ -62,7 +67,6 @@ sub changePid()
 	set auth_key = Nothing
 end sub
 
-
 Dim ws,workMode
 Set ws = CreateObject("WScript.shell")
 desktopPath = ws.SpecialFolders("Desktop")
@@ -74,35 +78,32 @@ if fso.folderExists(desktopPath&"\log") then
 end if
 set fso = Nothing
 
-'判断adb是否打开:method1
+'判断adb是否打开
 Dim deviceName,reg,match
 set ret = ws.Exec("adb devices")
 deviceName = ret.stdOut.ReadAll()
-set reg=New RegExp
-reg.pattern="device"
-reg.Global=True
-set match=reg.Execute(deviceName)
 
-if match.count <= 1 then
+'判断字符串是否包含device
+'set reg=New RegExp
+'reg.pattern="device"
+'reg.Global=True
+'set match=reg.Execute(deviceName)
+'if match.count <= 1 then
+
+if InStr(right(deviceName,11),"device")=False then
     WScript.Echo "Failed to open ADB!!!"
+	WScript.Quit
     set ws = Nothing
 	set ret = Nothing
 	set deviceName = Nothing
 	set reg=Nothing
 	set match=Nothing
-	WScript.Quit
 end if
+
 set ret = Nothing
 set deviceName = Nothing
 set reg=Nothing
 set match=Nothing
-
-'判断adb是否打开:method2
-'if ws.run("adb shell",,true)>0 then
-	'WScript.Echo "Failed to open adb!!!"
-	'set ws = Nothing
-	'WScript.Quit
-'end if
 
 ws.run "adb shell",1 'ws.run "ssh root@10.10.35.212", 0, True
 wscript.sleep 500
