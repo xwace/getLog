@@ -27,12 +27,12 @@ Set ws = CreateObject("WScript.shell")
 Dim deviceName,reg,match
 set ret = ws.Exec("adb devices")
 deviceName = ret.stdOut.ReadAll()
-set reg=New RegExp
-reg.pattern="device"
-reg.Global=True
-set match=reg.Execute(deviceName)
-
-if match.count <= 1 then
+'set reg=New RegExp
+'reg.pattern="device"
+'reg.Global=True
+'set match=reg.Execute(deviceName)
+'if match.count <= 1 then
+if InStr(right(deviceName,11),"device")=False then
     WScript.Echo "Failed to open ADB!!!"
     set ws = Nothing
 	set fso = Nothing
@@ -51,6 +51,7 @@ set deviceName = Nothing
 set reg=Nothing
 set match=Nothing
 
+'用adb shell返回值判断是否成功打开
 'if ws.run("adb shell",,true)>0 then
 	'WScript.Echo "Failed to open adb!!!"
 	'set ws = Nothing
