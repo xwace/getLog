@@ -100,6 +100,13 @@ if InStr(right(deviceName,11),"device")=False then
 	set match=Nothing
 end if
 
+'判断adb是否打开:method2
+'if ws.run("adb shell",,true)>0 then
+	'WScript.Echo "Failed to open adb!!!"
+	'set ws = Nothing
+	'WScript.Quit
+'end if
+
 set ret = Nothing
 set deviceName = Nothing
 set reg=Nothing
