@@ -1,0 +1,1 @@
+start "C:\Program Files\WindowsApps\3138AweZip.AweZip_1.4.31.0_x64__ffd303wmbhcjt\AweZip\BreeZip.exe" C:\Users\17300\Desktop\2.tar.gz
