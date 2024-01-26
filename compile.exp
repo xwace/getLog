@@ -26,7 +26,9 @@ spawn sh -c {
     cmake ..
     make -j32
 }
-sleep 1 #延迟1秒或者若干秒，否则无法正确生成二进制文件
+sleep 1 #延迟1秒或者若干秒，否则无法正确生成二进制文件(或者新建一个cmake的sh文件，调用这个expect脚本可避免二进制文件没更新的问题）
+
+
 spawn scp ./build/BFStest root@10.10.35.57:/home/robot/business/log
 expect "password"
 send "yx113322\r"
