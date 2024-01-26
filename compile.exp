@@ -21,6 +21,13 @@ cat /home/oswin/Desktop/${file}
 *******************************************************************************************************************
 #!/usr/bin/expect -f 
 #在［4.10服务器］向扫地机传输文件,并停留在robot的界面
+
+＃先执行cmake生成二进制文件
+spawn sh -c {
+    cd build
+    cmake ..
+    make -j32
+}
 spawn scp ./build/BFStest root@10.10.35.57:/home/robot/business/log
 expect "password"
 send "yx113322\r"
