@@ -1,5 +1,3 @@
-sleep 0.5 #延迟0.5秒
-
 #在［本地虚拟机］拉取［4.10服务器］文件:　在［本地虚拟机］创建.sh文件，注意expect文件可以写成./script.sh $arg0 $arg1的形式调用
 ##############################################################################################################################################
 #!/usr/bin/bash
@@ -28,6 +26,7 @@ spawn sh -c {
     cmake ..
     make -j32
 }
+sleep 1 #延迟1秒或者若干秒，否则无法正确生成二进制文件
 spawn scp ./build/BFStest root@10.10.35.57:/home/robot/business/log
 expect "password"
 send "yx113322\r"
@@ -37,8 +36,9 @@ expect "password:"
 send "yx113322\r"
 expect "#"
 send "cd /home/robot/business/log\r"
+send "./BFStest\r"
+send "rm BFStest;exit"
 interact
-
 
 
 ###############################################################################################################################################
