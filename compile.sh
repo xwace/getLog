@@ -9,6 +9,11 @@ set ip_head 10.10.35.
 #     expect "password"
 # }
 
+#调用bash脚本
+#spawn /bin/bash /home/devel/mstf/modules/master_pnc/install.sh
+#puts "Waiting for script to finish..."
+#expect eof
+
 spawn sh -c {
     cd build
     echo "\e[36m===choose platform===: \e[0m"
