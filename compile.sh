@@ -4,6 +4,7 @@ set ip_head 10.10.35.
 
 #搜索所有网域内可用的ip
 # for {set i 151} {$i < 255} {incr i} {
+#     set timeout 1
 #     spawn ssh root@$ip_head$i
 #     expect "password"
 # }
