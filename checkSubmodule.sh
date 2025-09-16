@@ -164,3 +164,16 @@ make -j32
 cd  $ROOT_PWD/out
 aarch64-linux-gnu-strip robot.svc
 md5sum robot.svc
+
+echo -e "\e[1;32m传robotsvc到机器...\e[0m"
+ip=98
+ssh-keygen -f "/home/devel/.ssh/known_hosts" -R 10.10.35.$ip
+expect << EOF
+spawn scp /home/devel/mstf/modules/RobotMaster/build/robot.svc root@10.10.35.$ip:/userdata/bin
+expect "yes/no"
+send "yes\r"
+expect "password"
+send "yx113322\r"
+set timeout 120
+expect eof
+EOF
